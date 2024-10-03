@@ -107,4 +107,12 @@ module.exports = function (app) {
     app.route("/users/:id")
         .delete(jsonku.deleteUser);
 
+  app.route("/category")
+  .get(jsonku.tampilKategori)
+
+  app.route("/category/:id")
+  .get(jsonku.tampilKategoriId)
+
+  app.route("/tambah-category")
+  .post(jsonku.tambahKategori)
 };
