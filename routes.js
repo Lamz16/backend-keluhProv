@@ -10,7 +10,7 @@ module.exports = function (app) {
         .get(jsonku.tampilComplaints);
 
     /*get by id detail complaint*/
-    app.route("/complaint-detail/:id")
+    app.route("/complaints/:id")
         .get(jsonku.tampilComplaintId);
 
     // Mengupdate complaint berdasarkan ID
