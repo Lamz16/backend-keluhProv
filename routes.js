@@ -8,10 +8,10 @@ module.exports = function (app) {
   app.route("/complaints").get(jsonku.tampilComplaints);
 
   /*get by id detail complaint*/
-  app.route("/complaints/:id").get(jsonku.tampilComplaintId);
+  app.route("/complaint-detail/:id").get(jsonku.tampilComplaintId);
 
   // Mengupdate complaint berdasarkan ID
-  app.route("/complaints/:id").put(jsonku.updateComplaint);
+  app.route("/complaints-/:id").put(jsonku.updateComplaint);
 
   // Menghapus complaint berdasarkan ID
   app.route("/complaints/:id").delete(jsonku.deleteComplaint);
@@ -35,6 +35,10 @@ module.exports = function (app) {
 
   // Mengambil diskusi berdasarkan ID
   app.route("/discussions/:id").get(jsonku.getDiscussionById);
+
+  // Mengambil diskusi berdasarkan ID complaint
+  app.route("/discussions/complaint/:id").get(jsonku.getDiscussionByComplaintId);
+
 
   // Menambah data discussions
   app.route("/discussions").post(jsonku.insertDiscussion);

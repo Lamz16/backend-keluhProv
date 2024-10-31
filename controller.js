@@ -27,7 +27,7 @@ exports.tampilComplaintId = function (req, res) {
         console.log(error); // Ubah connection.log menjadi console.log
         res.status(500).send("Error retrieving data");
       } else {
-        res.status(200).json(rows); // Pastikan data dikirim dalam format JSON
+        response.ok(rows,res) // Pastikan data dikirim dalam format JSON
       }
     }
   );
@@ -211,6 +211,24 @@ exports.getDiscussionById = function (req, res) {
     }
   );
 };
+
+exports.getDiscussionByComplaintId = function (req, res) {
+    let id = req.params.id; // Mendapatkan ID dari URL
+    console.log("ID yang diterima:", id); // Tambahkan log ini untuk debugging
+    connection.query(
+        "SELECT * FROM discussions WHERE complaint_id = ?", // Ganti `id` dengan `complaint_id` jika diskusi terkait dengan ID aduan
+        [id], // Gunakan ID yang diperoleh dari parameter URL
+        function (error, rows) {
+            if (error) {
+                console.log(error); // Log error untuk debugging
+                res.status(500).send("Error retrieving data");
+            } else {
+                res.status(200).json(rows); // Kirim data dalam format JSON
+            }
+        }
+    );
+};
+
 
 exports.insertDiscussion = function (req, res) {
   let { id, user_id, admin_id, complaint_id, comment } = req.body;
