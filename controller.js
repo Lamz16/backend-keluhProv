@@ -100,6 +100,10 @@ exports.deleteComplaint = function (req, res) {
   );
 };
 
+// kurang edit status komplain
+// kurang hapus
+
+
 exports.getAllCategories = function (req, res) {
   connection.query("SELECT * FROM categories", function (error, rows) {
     if (error) {
@@ -129,11 +133,11 @@ exports.getCategoryById = function (req, res) {
 };
 
 exports.insertCategory = function (req, res) {
-  let { id, name, description } = req.body;
+  let { name, description } = req.body;
 
   connection.query(
-    "INSERT INTO categories (id, name, description) VALUES (?, ?, ?)",
-    [id, name, description],
+    "INSERT INTO categories (name, description) VALUES (?, ?)",
+    [name, description],
     function (error, results) {
       if (error) {
         console.log(error);
@@ -488,8 +492,7 @@ exports.deleteUser = function (req, res) {
   );
 };
 
-// kurang edit status komplain
-// kurang hapus
+
 
 // -----COMPLAINTS----
 
