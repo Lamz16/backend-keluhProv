@@ -10,6 +10,8 @@ app.use(cors({
 // parse application
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
+
 
 //memanggil routes
 var routes = require('./routes')

@@ -2,6 +2,8 @@
 
 var response = require("./res");
 var connection = require("./koneksi");
+const multer = require("multer");
+const path = require("path");
 
 exports.index = function (req, res) {
   response.ok("aplikasi API berjalan", res);
@@ -290,6 +292,59 @@ exports.deleteDiscussion = function (req, res) {
     }
   );
 };
+
+// Konfigurasi multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/"); // Folder penyimpanan gambar
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// API untuk menambahkan berita
+exports.addNewsWithImage = function (req, res) {
+    upload.single("image")(req, res, function (err) {
+        if (err instanceof multer.MulterError || err) {
+            return res.status(500).json({ message: "Error uploading image", error: err });
+        }
+
+        const { admin_id, category_id, title, content, total_likes } = req.body;
+
+        // Validasi input
+        if (!title || !req.file) {
+            return res.status(400).json({ message: "Title dan gambar wajib diisi" });
+        }
+
+        const imageUrl = `http://localhost:3000/uploads/${req.file.filename}`; // URL gambar
+        const sql = `
+      INSERT INTO news (admin_id, category_id, title, image, content, total_likes) 
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+        connection.query(
+            sql,
+            [admin_id, category_id, title, imageUrl, content, total_likes || 0],
+            function (error, results) {
+                if (error) {
+                    console.log(error); // Log error untuk debugging
+                    res.status(500).json({ message: "Error inserting data" });
+                } else {
+                    res.status(201).json({
+                        message: "Berita berhasil ditambahkan",
+                        insertedId: results.insertId,
+                        imageUrl: imageUrl
+                    });
+                }
+            }
+        );
+    });
+};
+
 
 exports.getAllNews = function (req, res) {
   connection.query("SELECT * FROM news", function (error, rows) {

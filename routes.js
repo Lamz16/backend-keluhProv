@@ -52,6 +52,9 @@ module.exports = function (app) {
   // Mengambil semua berita
   app.route("/news").get(jsonku.getAllNews);
 
+  // Menambah berita
+  app.route("/addNews").post(jsonku.addNewsWithImage);
+
   // Mengambil berita berdasarkan ID
   app.route("/news/:id").get(jsonku.getNewsById);
 
